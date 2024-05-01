@@ -79,7 +79,14 @@ feat_songs
 
 
 # %%
-sns.stripplot(x = 'artist_count', y = 'streams', data = feat_songs, jitter=0.4)
+sns.stripplot(x = 'artist_count', y = 'streams', data = feat_songs, jitter=0.35)
+
+
+# %%
+# Wilcoxon test to check if the number of artist affect the number of streams
+from scipy.stats import wilcoxon
+stat, p = wilcoxon(feat_songs['artist_count'], feat_songs['streams'])
+print('Statistics=%.3f, p=%.3f' % (stat, p))
 
 
 # %%
@@ -88,13 +95,6 @@ feat_songs_by_artist_count = data.filter(items=['artist_count'], axis = 1)
 feat_songs_by_artist_count['nb'] = 0
 feat_songs_by_artist_count = feat_songs_by_artist_count.groupby('artist_count').count().reset_index()
 feat_songs_by_artist_count
-
-
-# %%
-# Wilcoxon test to check if the number of artist affect the number of streams
-from scipy.stats import wilcoxon
-stat, p = wilcoxon(feat_songs['artist_count'], feat_songs['streams'])
-print('Statistics=%.3f, p=%.3f' % (stat, p))
 
 
 # %%
