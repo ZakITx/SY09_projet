@@ -178,13 +178,3 @@ def compute_correlation_matrix(df):
 
 correlation_matrix = compute_correlation_matrix(data)
 print(correlation_matrix)
-
-
-# ## Correlation between Variables ##
-#
-# 1. (streams, in_spotify_playlists): **0.76**
-# 2. (in_spotify_playlists, in_apple_playlists): **0.70**
-# 3. (in_spotify_playlists, in_deezer_playlists): **0.79**
-# 4. (streams, in_deezer_playlists): **0.71**
-# 5. (streams, in_apple_playlists): **0.67**
-#
