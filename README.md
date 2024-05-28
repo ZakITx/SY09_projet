@@ -2,15 +2,15 @@
 
 Projet SY09 sur le dataset des musiques les plus streamées en 2023 
 
-## Indication
 
+# Indications et exploration 
 Peut normaliser pour l'acp, pas pour le k-means
 
-Pour stream en fct de nb artist
 
+Pour stream en fct de nb artist
 - stripplot OK
-- non paramétrique de la nova
-- wilkonson 2 à 2
+non paramétrique de la nova
+wilkonson 2 à 2
 - jitter sur le nombre d'éléments OK
 
 streams_mode.png major minor : wilkonson OK
@@ -22,3 +22,13 @@ k-means avec les interdistances : kamedoids (sklearn_extra.cluster.KMedoids)
 vérifier si c'est logique
 
 prédiction sur musicalité en fonction bpm, musicalité, tempo, rythme, tonalité
+
+## Correlation between Variables ##
+
+1. (streams, in_spotify_playlists): **0.76**
+2. (in_spotify_playlists, in_apple_playlists): **0.70**
+3. (in_spotify_playlists, in_deezer_playlists): **0.79**
+4. (streams, in_deezer_playlists): **0.71**
+5. (streams, in_apple_playlists): **0.67**
+
+
