@@ -26,7 +26,7 @@ from sklearn.linear_model import LinearRegression
 
 
 data = pd.read_csv(
-    "/Users/azmanizakary/Desktop/GI04/SY09/projet/SY09_projet/spotify-2023.csv",
+    "../spotify-2023.csv",
     encoding="latin-1",
 )
 data.head()
