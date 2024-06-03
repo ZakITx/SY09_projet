@@ -8,12 +8,13 @@ Peut normaliser pour l'acp, pas pour le k-means
 
 
 Pour stream en fct de nb artist
-- stripplot :heavy_check_mark:
-non paramétrique de l'anova
-wilkonson 2 à 2
-- jitter sur le nombre d'éléments :heavy_check_mark:
+- stripplot :ballot_box_with_check:
 
-streams_mode.png major minor : wilkonson :heavy_check_mark:
+non paramétrique de l'anova wilkonson 2 à 2
+
+- jitter sur le nombre d'éléments :ballot_box_with_check:
+
+streams_mode.png major minor : wilkonson :ballot_box_with_check:
 
 aftd sur la musicalité
 
