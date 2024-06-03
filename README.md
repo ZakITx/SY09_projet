@@ -8,14 +8,15 @@ Peut normaliser pour l'acp, pas pour le k-means
 
 
 Pour stream en fct de nb artist
-- stripplot OK
-non paramétrique de la nova
+- stripplot :heavy_check_mark:
+non paramétrique de l'anova
 wilkonson 2 à 2
-- jitter sur le nombre d'éléments OK
+- jitter sur le nombre d'éléments :heavy_check_mark:
 
-streams_mode.png major minor : wilkonson OK
+streams_mode.png major minor : wilkonson :heavy_check_mark:
 
 aftd sur la musicalité
+
 créer une distance entre les chansons avec les éléments de la musicalité
 
 k-means avec les interdistances : kamedoids (sklearn_extra.cluster.KMedoids)
