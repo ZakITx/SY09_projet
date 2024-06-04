@@ -25,6 +25,16 @@ vérifier si c'est logique
 
 prédiction sur musicalité en fonction bpm, musicalité, tempo, rythme, tonalité
 
+## PCA's PCs ##
+
+PC1 =  'in_spotify_playlists' (**0.999977**), 'in_apple_playlists' (0.006662), 'in_apple_charts' ( 0.001381)
+PC2 = 'in_apple_playlists' (**0.799039**), 'in_apple_charts' (**0.580726**), 'in_spotify_charts' (0.127240)
+PC3 = 'in_apple_charts' (**-0.774584**), 'in_apple_playlists' (**0.597773**), 'in_spotify_charts' (-0.189287)
+
+## KMeans' clusters ##
+
+Frontière de décision = f('in_spotify_playlists', 'released_year')
+
 ## Correlation between Variables ##
 
 1. (streams, in_spotify_playlists): **0.76**
