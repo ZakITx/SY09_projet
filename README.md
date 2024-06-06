@@ -31,10 +31,11 @@ PC3 = 'in_deezer_playlists' (**0.98%**), 'in_shazam_charts' (**0.17%**), 'in_app
 
 Frontière de décision = f('streams', 'in_spotify_playlists', 'released_year')
 
-## Correlation between Variables
+## Correlation between Variables ##
 
-1. (streams, in_spotify_playlists): **0.76**
-2. (in_spotify_playlists, in_apple_playlists): **0.70**
-3. (in_spotify_playlists, in_deezer_playlists): **0.79**
-4. (streams, in_deezer_playlists): **0.71**
-5. (streams, in_apple_playlists): **0.67**
+1. (streams, in_spotify_playlists): **0.83**
+2. (in_spotify_playlists, in_apple_playlists): **0.78**
+3. (streams, in_apple_playlists): **0.67**
+4. (streams, released_year): **-0.68**
+5. (released_year, in_spotify_playlists): **-0.66**
+
