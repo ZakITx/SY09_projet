@@ -335,13 +335,13 @@ df_resampled3 = resample(pca_tree, n_samples=200, replace=True)
 
 
 # %%
-DT1 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT1 = DecisionTreeClassifier()
 DT1.fit(df_resampled1[['PC1', 'PC2']], df_resampled1['in_spotify_playlists'])
 
-DT2 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT2 = DecisionTreeClassifier()
 DT2.fit(df_resampled2[['PC1', 'PC2']], df_resampled2['in_spotify_playlists'])
 
-DT3 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT3 = DecisionTreeClassifier()
 DT3.fit(df_resampled3[['PC1', 'PC2']], df_resampled3['in_spotify_playlists'])
 
 
@@ -351,17 +351,115 @@ add_decision_boundary(aggregating, model_classes=[0, 1])
 
 
 # %%
-DT1 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT1 = DecisionTreeClassifier()
 DT1.fit(df_resampled1[['PC3', 'PC2']], df_resampled1['in_spotify_playlists'])
 
-DT2 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT2 = DecisionTreeClassifier()
 DT2.fit(df_resampled2[['PC3', 'PC2']], df_resampled2['in_spotify_playlists'])
 
-DT3 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT3 = DecisionTreeClassifier()
 DT3.fit(df_resampled3[['PC3', 'PC2']], df_resampled3['in_spotify_playlists'])
 
 
 # %%
 axes = sns.scatterplot(data=pca_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
 add_decision_boundary(aggregating, model_classes=[0, 1])
+
+
+# %%
+### Avec validation croisée
+DT1 = DecisionTreeClassifier()
+DT1.fit(pca_tree[['PC1', 'PC2']], pca_tree['in_spotify_playlists'])
+
+DT2 = DecisionTreeClassifier()
+DT2.fit(pca_tree[['PC3', 'PC2']], pca_tree['in_spotify_playlists'])
+
+path1 = DT1.cost_complexity_pruning_path(pca_tree[['PC1', 'PC2']], pca_tree['in_spotify_playlists'])
+path2 = DT2.cost_complexity_pruning_path(pca_tree[['PC3', 'PC2']], pca_tree['in_spotify_playlists'])
+
+alphas1 = path1['ccp_alphas']
+alphas2 = path2['ccp_alphas']
+
+
+# %%
+import math as m
+alphas_mean1 = [m.sqrt(alphas1[i] * alphas1[i+1]) for i in range(len(alphas1) - 1)]
+alphas_mean2 = [m.sqrt(alphas2[i] * alphas2[i+1]) for i in range(len(alphas2) - 1)]
+
+
+# %%
+# Cross validation
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import KFold
+from sklearn.metrics import accuracy_score
+from sklearn.utils import check_X_y
+
+
+def decision_tree_cross_validation_accuracies(X, y, n_folds, lambdas):
+    X, y = check_X_y(X, y)
+
+    # Création d'un object `KFold` pour la validation croisée
+    kf = KFold(n_splits=n_folds)
+    kf.get_n_splits(X)
+
+    for _, (train_index, val_index) in enumerate(kf.split(X)):
+        # Création de `X_train`, `y_train`, `X_val` et `y_val`
+        X_train = X[train_index]
+        y_train = y[train_index]
+        X_val = X[val_index]
+        y_val = y[val_index]
+
+        for k, lmb in enumerate(lambdas):
+            # Création d'un arbre avec un coefficient coût-complexité
+            # égal à `lmb`
+            clf = DecisionTreeClassifier(ccp_alpha=lmb)
+
+            # Apprentissage sur l'ensemble d'apprentissage et calcul
+            # du taux de bonne classification sur l'ensemble de
+            # validation
+            clf.fit(X_train, y_train)
+            y_pred = clf.predict(X_val)
+            acc = accuracy_score(y_val, y_pred)
+
+            yield k, lmb, acc
+
+
+# %%
+gen = decision_tree_cross_validation_accuracies(pca_tree[['PC1', 'PC2']].values, pca_tree['in_spotify_playlists'].values, 5, alphas_mean1)
+errors1 = pd.DataFrame(gen, columns=['k', 'lambda', 'accuracy'])
+
+gen = decision_tree_cross_validation_accuracies(pca_tree[['PC3', 'PC2']].values, pca_tree['in_spotify_playlists'].values, 5, alphas_mean2)
+errors2 = pd.DataFrame(gen, columns=['k', 'lambda', 'accuracy'])
+
+
+# %%
+### PC1, PC2
+errors1.groupby('k').mean()
+max_acc = errors1["accuracy"].max()
+best = errors1[errors1["accuracy"] == max_acc]
+min_lambda = best["lambda"].min()
+best = best[best["lambda"] == min_lambda]
+
+DT1 = DecisionTreeClassifier(ccp_alpha=min_lambda)
+DT1.fit(pca_tree[['PC1', 'PC2']], pca_tree['in_spotify_playlists'])
+
+sns.scatterplot(data=pca_tree, x='PC1', y='PC2', hue='in_spotify_playlists')
+add_decision_boundary(DT1)
+
+
+# %%
+## PC3, PC2
+errors2.groupby('k').mean()
+max_acc = errors2["accuracy"].max()
+best = errors2[errors2["accuracy"] == max_acc]
+min_lambda = best["lambda"].min()
+best = best[best["lambda"] == min_lambda]
+
+DT2 = DecisionTreeClassifier(ccp_alpha=min_lambda)
+DT2.fit(pca_tree[['PC3', 'PC2']], pca_tree['in_spotify_playlists'])
+
+sns.scatterplot(data=pca_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
+add_decision_boundary(DT2)
+
+
 # %%
