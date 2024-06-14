@@ -283,3 +283,85 @@ add_decision_boundary(DT1)
 
 
 # %%
+### Avec musical features
+musical_tree = pd.DataFrame(musical_pca, columns=['PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6', 'PC7'])
+musical_tree['in_spotify_playlists'] = df['in_spotify_playlists'].apply(lambda x: 0 if x < 2200 else 1)
+df_resampled1 = resample(musical_tree, n_samples=200, replace=True)
+df_resampled2 = resample(musical_tree, n_samples=200, replace=True)
+df_resampled3 = resample(musical_tree, n_samples=200, replace=True)
+
+
+# %%
+DT1 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT1.fit(df_resampled1[['PC1', 'PC2']], df_resampled1['in_spotify_playlists'])
+
+DT2 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT2.fit(df_resampled2[['PC1', 'PC2']], df_resampled2['in_spotify_playlists'])
+
+DT3 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT3.fit(df_resampled3[['PC1', 'PC2']], df_resampled3['in_spotify_playlists'])
+
+
+# %%
+axes = sns.scatterplot(data=musical_tree, x='PC1', y='PC2', hue='in_spotify_playlists')
+add_decision_boundary(aggregating, model_classes=[0, 1])
+
+
+# %%
+DT1 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT1.fit(df_resampled1[['PC3', 'PC2']], df_resampled1['in_spotify_playlists'])
+
+DT2 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT2.fit(df_resampled2[['PC3', 'PC2']], df_resampled2['in_spotify_playlists'])
+
+DT3 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT3.fit(df_resampled3[['PC3', 'PC2']], df_resampled3['in_spotify_playlists'])
+
+
+# %%
+axes = sns.scatterplot(data=musical_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
+add_decision_boundary(aggregating, model_classes=[0, 1])
+
+
+# %%
+pca = PCA()
+pca.fit(numerical_df)
+pca_df = pca.transform(numerical_df)
+pca_tree = pd.DataFrame(pca_df, columns=[f'PC{i}' for i in range(1, pca_df.shape[1] + 1)])
+pca_tree['in_spotify_playlists'] = df['in_spotify_playlists'].apply(lambda x: 0 if x < 2200 else 1)
+df_resampled1 = resample(pca_tree, n_samples=200, replace=True)
+df_resampled2 = resample(pca_tree, n_samples=200, replace=True)
+df_resampled3 = resample(pca_tree, n_samples=200, replace=True)
+
+
+# %%
+DT1 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT1.fit(df_resampled1[['PC1', 'PC2']], df_resampled1['in_spotify_playlists'])
+
+DT2 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT2.fit(df_resampled2[['PC1', 'PC2']], df_resampled2['in_spotify_playlists'])
+
+DT3 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT3.fit(df_resampled3[['PC1', 'PC2']], df_resampled3['in_spotify_playlists'])
+
+
+# %%
+axes = sns.scatterplot(data=pca_tree, x='PC1', y='PC2', hue='in_spotify_playlists')
+add_decision_boundary(aggregating, model_classes=[0, 1])
+
+
+# %%
+DT1 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT1.fit(df_resampled1[['PC3', 'PC2']], df_resampled1['in_spotify_playlists'])
+
+DT2 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT2.fit(df_resampled2[['PC3', 'PC2']], df_resampled2['in_spotify_playlists'])
+
+DT3 = DecisionTreeClassifier(max_leaf_nodes=50)
+DT3.fit(df_resampled3[['PC3', 'PC2']], df_resampled3['in_spotify_playlists'])
+
+
+# %%
+axes = sns.scatterplot(data=pca_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
+add_decision_boundary(aggregating, model_classes=[0, 1])
+# %%
