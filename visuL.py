@@ -239,11 +239,11 @@ def add_decision_boundary(
 # %%
 from sklearn.utils import resample
 tree_df = numerical_df[['in_spotify_playlists', 'streams', 'released_year']]
-tree_df['in_spotify_playlists'] = tree_df['in_spotify_playlists'].apply(lambda x: 0 if x < 5000 else 1)
+tree_df['in_spotify_playlists'] = tree_df['in_spotify_playlists'].apply(lambda x: 0 if x < 2200 else 1)
 
-df_resampled1 = resample(tree_df, n_samples=200, random_state=42, replace=True)
-df_resampled2 = resample(tree_df, n_samples=200, random_state=43, replace=True)
-df_resampled3 = resample(tree_df, n_samples=200, random_state=44, replace=True)
+df_resampled1 = resample(tree_df, n_samples=200, replace=True)
+df_resampled2 = resample(tree_df, n_samples=200, replace=True)
+df_resampled3 = resample(tree_df, n_samples=200, replace=True)
 
 
 # %%
