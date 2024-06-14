@@ -462,4 +462,61 @@ sns.scatterplot(data=pca_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
 add_decision_boundary(DT2)
 
 
+
+
+
+# %%
+### meme chose avec musical features
+DT1 = DecisionTreeClassifier()
+DT1.fit(musical_tree[['PC1', 'PC2']], musical_tree['in_spotify_playlists'])
+
+DT2 = DecisionTreeClassifier()
+DT2.fit(musical_tree[['PC3', 'PC2']], musical_tree['in_spotify_playlists'])
+
+path1 = DT1.cost_complexity_pruning_path(musical_tree[['PC1', 'PC2']], musical_tree['in_spotify_playlists'])
+path2 = DT2.cost_complexity_pruning_path(musical_tree[['PC3', 'PC2']], musical_tree['in_spotify_playlists'])
+
+alphas1 = path1['ccp_alphas']
+alphas2 = path2['ccp_alphas']
+
+alphas_mean1 = [m.sqrt(alphas1[i] * alphas1[i+1]) for i in range(len(alphas1) - 1)]
+alphas_mean2 = [m.sqrt(alphas2[i] * alphas2[i+1]) for i in range(len(alphas2) - 1)]
+
+gen = decision_tree_cross_validation_accuracies(musical_tree[['PC1', 'PC2']].values, musical_tree['in_spotify_playlists'].values, 5, alphas_mean1)
+errors1 = pd.DataFrame(gen, columns=['k', 'lambda', 'accuracy'])
+
+gen = decision_tree_cross_validation_accuracies(musical_tree[['PC3', 'PC2']].values, musical_tree['in_spotify_playlists'].values, 5, alphas_mean2)
+errors2 = pd.DataFrame(gen, columns=['k', 'lambda', 'accuracy'])
+
+
+# %%	
+### PC1, PC2
+errors1.groupby('k').mean()
+max_acc = errors1["accuracy"].max()
+best = errors1[errors1["accuracy"] == max_acc]
+min_lambda = best["lambda"].min()
+best = best[best["lambda"] == min_lambda]
+
+DT1 = DecisionTreeClassifier(ccp_alpha=min_lambda)
+DT1.fit(musical_tree[['PC1', 'PC2']], musical_tree['in_spotify_playlists'])
+
+sns.scatterplot(data=musical_tree, x='PC1', y='PC2', hue='in_spotify_playlists')
+add_decision_boundary(DT1)
+
+
+# %%
+### PC3, PC2
+errors2.groupby('k').mean()
+max_acc = errors2["accuracy"].max()
+best = errors2[errors2["accuracy"] == max_acc]
+min_lambda = best["lambda"].min()
+best = best[best["lambda"] == min_lambda]
+
+DT2 = DecisionTreeClassifier(ccp_alpha=min_lambda)
+DT2.fit(musical_tree[['PC3', 'PC2']], musical_tree['in_spotify_playlists'])
+
+sns.scatterplot(data=musical_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
+add_decision_boundary(DT2)
+
+
 # %%
