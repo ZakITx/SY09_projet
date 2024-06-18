@@ -275,6 +275,18 @@ axes = sns.scatterplot(data=tree_df, x='streams', y='released_year', hue='in_spo
 axes.set_ylim(1900, 2024)
 add_decision_boundary(aggregating, model_classes=[0, 1])
 
+# %%
+# F1 scores
+from sklearn.metrics import f1_score
+y_pred = aggregating(tree_df[['streams', 'released_year']])
+f = f1_score(tree_df['in_spotify_playlists'], y_pred)
+print(f)
+
+# accuracy
+from sklearn.metrics import accuracy_score
+acc = accuracy_score(tree_df['in_spotify_playlists'], y_pred)
+print(acc)
+
 
 # %%
 axes = sns.scatterplot(data=tree_df, x='streams', y='released_year', hue='in_spotify_playlists')
@@ -306,6 +318,16 @@ DT3.fit(df_resampled3[['PC1', 'PC2']], df_resampled3['in_spotify_playlists'])
 axes = sns.scatterplot(data=musical_tree, x='PC1', y='PC2', hue='in_spotify_playlists')
 add_decision_boundary(aggregating, model_classes=[0, 1])
 
+# %%
+# f1 scores
+y_pred = aggregating(musical_tree[['PC1', 'PC2']])
+f = f1_score(musical_tree['in_spotify_playlists'], y_pred)
+print(f)
+
+# accuracy
+acc = accuracy_score(musical_tree['in_spotify_playlists'], y_pred)
+print(acc)
+
 
 # %%
 DT1 = DecisionTreeClassifier(max_leaf_nodes=50)
@@ -322,8 +344,19 @@ DT3.fit(df_resampled3[['PC3', 'PC2']], df_resampled3['in_spotify_playlists'])
 axes = sns.scatterplot(data=musical_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
 add_decision_boundary(aggregating, model_classes=[0, 1])
 
+# %%
+# f1 scores
+y_pred = aggregating(musical_tree[['PC3', 'PC2']])
+f = f1_score(musical_tree['in_spotify_playlists'], y_pred)
+print(f)
+
+# accuracy
+acc = accuracy_score(musical_tree['in_spotify_playlists'], y_pred)
+print(acc)
+
 
 # %%
+# Toutes les données
 pca = PCA()
 pca.fit(numerical_df)
 pca_df = pca.transform(numerical_df)
@@ -351,6 +384,17 @@ add_decision_boundary(aggregating, model_classes=[0, 1])
 
 
 # %%
+# f1 scores
+y_pred = aggregating(pca_tree[['PC1', 'PC2']])
+f = f1_score(pca_tree['in_spotify_playlists'], y_pred)
+print(f)
+
+# accuracy
+acc = accuracy_score(pca_tree['in_spotify_playlists'], y_pred)
+print(acc)
+
+
+# %%
 DT1 = DecisionTreeClassifier()
 DT1.fit(df_resampled1[['PC3', 'PC2']], df_resampled1['in_spotify_playlists'])
 
@@ -364,6 +408,17 @@ DT3.fit(df_resampled3[['PC3', 'PC2']], df_resampled3['in_spotify_playlists'])
 # %%
 axes = sns.scatterplot(data=pca_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
 add_decision_boundary(aggregating, model_classes=[0, 1])
+
+
+# %%
+# f1 scores
+y_pred = aggregating(pca_tree[['PC3', 'PC2']])
+f = f1_score(pca_tree['in_spotify_playlists'], y_pred)
+print(f)
+
+# accuracy
+acc = accuracy_score(pca_tree['in_spotify_playlists'], y_pred)
+print(acc)
 
 
 # %%
@@ -448,6 +503,17 @@ add_decision_boundary(DT1)
 
 
 # %%
+# f1 scores
+y_pred = DT1.predict(pca_tree[['PC1', 'PC2']])
+f = f1_score(pca_tree['in_spotify_playlists'], y_pred)
+print(f)
+
+# accuracy
+acc = accuracy_score(pca_tree['in_spotify_playlists'], y_pred)
+print(acc)
+
+
+# %%
 ## PC3, PC2
 errors2.groupby('k').mean()
 max_acc = errors2["accuracy"].max()
@@ -462,7 +528,15 @@ sns.scatterplot(data=pca_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
 add_decision_boundary(DT2)
 
 
+# %%
+# f1 scores
+y_pred = DT2.predict(pca_tree[['PC3', 'PC2']])
+f = f1_score(pca_tree['in_spotify_playlists'], y_pred)
+print(f)
 
+# accuracy
+acc = accuracy_score(pca_tree['in_spotify_playlists'], y_pred)
+print(acc)
 
 
 # %%
@@ -505,6 +579,17 @@ add_decision_boundary(DT1)
 
 
 # %%
+# f1 scores
+y_pred = DT1.predict(musical_tree[['PC1', 'PC2']])
+f = f1_score(musical_tree['in_spotify_playlists'], y_pred)
+print(f)
+
+# accuracy
+acc = accuracy_score(musical_tree['in_spotify_playlists'], y_pred)
+print(acc)
+
+
+# %%
 ### PC3, PC2
 errors2.groupby('k').mean()
 max_acc = errors2["accuracy"].max()
@@ -517,6 +602,17 @@ DT2.fit(musical_tree[['PC3', 'PC2']], musical_tree['in_spotify_playlists'])
 
 sns.scatterplot(data=musical_tree, x='PC3', y='PC2', hue='in_spotify_playlists')
 add_decision_boundary(DT2)
+
+
+# %%
+# f1 scores
+y_pred = DT2.predict(musical_tree[['PC3', 'PC2']])
+f = f1_score(musical_tree['in_spotify_playlists'], y_pred)
+print(f)
+
+# accuracy
+acc = accuracy_score(musical_tree['in_spotify_playlists'], y_pred)
+print(acc)
 
 
 # %%
